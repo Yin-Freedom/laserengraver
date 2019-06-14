@@ -1,0 +1,13 @@
+Inkscape Laser Engraver Bug
+If you¡¯ve tried to use the modified Inkscape laser engraver plugin mentioned in this blog post about building an engraver, you may have run into an error trying to do the export. It¡¯s something like ¡°AttributeError: ¡®module¡¯ object has no attribute ¡®unittouu¡¯¡± or ¡°unittouu not part of inkex module¡°. Here¡¯s the fix.
+
+The bug is on line 3080 of laserengraver.py and broke due to an Inkscape change. 
+
+Old line:
+doc_height = inkex.unittouu(self.document.getroot().get('height'))
+
+New line:
+doc_height = self.unittouu(self.document.getroot().xpath('@height', namespaces=inkex.NSS)[0])
+
+Be sure to have the exact same number of spaces/tabs on this line. In Python, whitespace is important, so you can¡¯t mix and match spaces and tabs, and all code blocks must have the same whitespace alignment.
+Problem solved!
